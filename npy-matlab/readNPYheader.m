@@ -54,14 +54,22 @@ try
     
     littleEndian = ~strcmp(dtNPY(1), '>');
     
-    dataType = dtypesMatlab{strcmp(dtNPY(2:3), dtypesNPY)};
-        
+    if contains(dtNPY,'S')
+        dataType = 'char';
+    else
+        dataType = dtypesMatlab{strcmp(dtNPY(2:end), dtypesNPY)};
+    end
+            
     r = regexp(arrayFormat, '''fortran_order''\s*:\s*(\w+)', 'tokens');
     fortranOrder = strcmp(r{1}{1}, 'True');
     
     r = regexp(arrayFormat, '''shape''\s*:\s*\((.*?)\)', 'tokens');
     shapeStr = r{1}{1}; 
-    arrayShape = str2num(shapeStr(shapeStr~='L'));
+    if contains(dtNPY,'S')
+        arrayShape = [str2num(shapeStr(shapeStr~='L')), str2double(dtNPY(3:end))];
+    else
+        arrayShape = str2num(shapeStr(shapeStr~='L'));
+    end
 
     
     fclose(fid);

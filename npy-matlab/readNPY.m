@@ -25,6 +25,9 @@ try
     if length(shape)>1 && ~fortranOrder
         data = reshape(data, shape(end:-1:1));
         data = permute(data, [length(shape):-1:1]);
+        if strcmp(dataType, 'char')
+            data=deblank(string(data));
+        end
     elseif length(shape)>1
         data = reshape(data, shape);
     end
