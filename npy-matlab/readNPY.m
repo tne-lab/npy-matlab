@@ -15,8 +15,6 @@ else
     fid = fopen(filename, 'r', 'b');
 end
 
-%%% TESTINGS
-
 try
 
     [~] = fread(fid, totalHeaderLength, 'uint8');
